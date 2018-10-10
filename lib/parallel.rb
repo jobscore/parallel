@@ -51,7 +51,6 @@ module Parallel
 
     def stop
       close_pipes
-      wait # if it goes zombie, rather wait here to be able to debug
     end
 
     # might be passed to started_processes and simultaneously closed by another thread
@@ -75,14 +74,6 @@ module Parallel
       end
       raise result.exception if ExceptionWrapper === result
       result
-    end
-
-    private
-
-    def wait
-      Process.wait(pid)
-    rescue Interrupt
-      # process died
     end
   end
 
